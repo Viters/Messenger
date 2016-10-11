@@ -13,10 +13,20 @@ public class Client {
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private Socket connection;
+    private Thread thread;
 
     public Client(String hostName, int port){
         this.port = port;
         this.hostName = hostName;
+
+        this.thread = new Thread(() -> {
+            try {
+                runClient();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        thread.start();
     }
 
     private void connect() throws IOException{
@@ -36,8 +46,20 @@ public class Client {
         this.createStreams();
     }
 
+    private String receiveMessage() throws IOException, ClassNotFoundException{
+        String message = input.readObject().toString();
+        System.out.println(message);
+        return message;
+    }
+
+    private void sendMessage(String message) throws IOException{
+        output.writeObject(message);
+        output.flush();
+        System.out.println(message);
+    }
+
     @Override
-    protected void finalize() throws Throwable, IOException{
+    protected void finalize() throws Throwable{
         super.finalize();
         input.close();
         output.close();
