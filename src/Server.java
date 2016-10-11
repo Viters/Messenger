@@ -13,16 +13,27 @@ public class Server {
     private ObjectOutputStream output;
     private ServerSocket socket;
     private Socket connection;
+    private Thread thread;
 
     public Server(int port) throws IOException {
         this.port = port;
         socket = new ServerSocket(port);
+        thread = new Thread(() -> {
+            try {
+                runServer();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        thread.start();
     }
 
-    public void run() throws IOException {
+    private void runServer() throws IOException {
         while(true) {
             connect();
             createStreams();
+            onChat();
         }
     }
 
@@ -40,6 +51,29 @@ public class Server {
 
     private void onChat() throws IOException {
         System.out.println("You are now connected!");
+        String message;
+        do {
+            try {
+                message =  input.readObject().toString();
+                System.out.println(message);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        while(!connection.isClosed());
+    }
 
+    @Override
+    protected void finalize() throws Throwable {
+        super.finalize();
+        output.close();
+        input.close();
+        connection.close();
+    }
+
+    private void sendMessage(String message) throws IOException {
+        output.writeObject(message);
+        output.flush();
+        System.out.println(message);
     }
 }
