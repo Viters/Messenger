@@ -34,6 +34,8 @@ public class Main {
         System.out.println("Please provide port to start your server:");
         port = input.nextInt();
 
+        input.nextLine();
+
         try {
             Server server = new Server(port);
 
@@ -58,6 +60,8 @@ public class Main {
         host = input.next();
         System.out.println("Please provide port:");
         port = input.nextInt();
+
+        input.nextLine();
 
         try {
             Client client = new Client(host, port);

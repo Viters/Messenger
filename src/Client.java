@@ -65,7 +65,7 @@ public class Client {
     public void sendMessage(String message) throws IOException {
         output.writeObject(message);
         output.flush();
-        System.out.println(message);
+        System.out.println("Message sent.");
     }
 
     @Override
