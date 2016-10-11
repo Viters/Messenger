@@ -51,15 +51,15 @@ public class Client {
 
     private void receiveMessage() throws IOException {
         String message;
-        try {
-            do {
+        do {
+            try {
                 message = input.readObject().toString();
                 System.out.println(message);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
-            while (!connection.isClosed());
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
         }
+        while (!connection.isClosed());
     }
 
     public void sendMessage(String message) throws IOException {

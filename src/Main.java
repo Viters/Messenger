@@ -38,7 +38,7 @@ public class Main {
             Server server = new Server(port);
 
             while (true) {
-                message = input.next();
+                message = input.nextLine();
                 server.sendMessage(message);
             }
 
@@ -62,7 +62,7 @@ public class Main {
             Client client = new Client(host, port);
 
             while (true) {
-                message = input.next();
+                message = input.nextLine();
                 client.sendMessage(message);
             }
 
