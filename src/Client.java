@@ -15,7 +15,7 @@ public class Client {
     private Socket connection;
     private Thread thread;
 
-    public Client(String hostName, int port){
+    public Client(String hostName, int port) {
         this.port = port;
         this.hostName = hostName;
 
@@ -29,37 +29,44 @@ public class Client {
         thread.start();
     }
 
-    private void connect() throws IOException{
+    private void connect() throws IOException {
         System.out.println("Connecting...");
         this.connection = new Socket(hostName, port);
         System.out.println("Connection established.");
     }
 
-    private void createStreams() throws IOException{
+    private void createStreams() throws IOException {
         input = new ObjectInputStream(connection.getInputStream());
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
     }
 
-    private void runClient() throws IOException{
+    private void runClient() throws IOException {
         this.connect();
         this.createStreams();
     }
 
-    private String receiveMessage() throws IOException, ClassNotFoundException{
-        String message = input.readObject().toString();
-        System.out.println(message);
-        return message;
+    private void receiveMessage() throws IOException {
+        String message;
+        try {
+            do {
+                message = input.readObject().toString();
+                System.out.println(message);
+            }
+            while (!connection.isClosed());
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void sendMessage(String message) throws IOException{
+    public void sendMessage(String message) throws IOException {
         output.writeObject(message);
         output.flush();
         System.out.println(message);
     }
 
     @Override
-    protected void finalize() throws Throwable{
+    protected void finalize() throws Throwable {
         super.finalize();
         input.close();
         output.close();

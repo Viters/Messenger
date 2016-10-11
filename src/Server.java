@@ -54,7 +54,7 @@ public class Server {
         String message;
         do {
             try {
-                message =  input.readObject().toString();
+                message = input.readObject().toString();
                 System.out.println(message);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
@@ -71,7 +71,7 @@ public class Server {
         connection.close();
     }
 
-    private void sendMessage(String message) throws IOException {
+    public void sendMessage(String message) throws IOException {
         output.writeObject(message);
         output.flush();
         System.out.println(message);
