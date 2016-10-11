@@ -39,7 +39,8 @@ public class Main {
 
             while (true) {
                 message = input.nextLine();
-                server.sendMessage(message);
+                if (input.hasNextLine())
+                    server.sendMessage(message);
             }
 
         } catch (IOException e) {
@@ -63,7 +64,8 @@ public class Main {
 
             while (true) {
                 message = input.nextLine();
-                client.sendMessage(message);
+                if (input.hasNextLine())
+                    client.sendMessage(message);
             }
 
         } catch (IOException e) {
