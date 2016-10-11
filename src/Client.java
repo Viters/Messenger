@@ -42,8 +42,11 @@ public class Client {
     }
 
     private void runClient() throws IOException {
-        this.connect();
-        this.createStreams();
+        while (true) {
+            this.connect();
+            this.createStreams();
+            this.receiveMessage();
+        }
     }
 
     private void receiveMessage() throws IOException {
