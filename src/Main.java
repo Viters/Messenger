@@ -30,6 +30,10 @@ public class Main {
         Scanner input = new Scanner(System.in);
         int port;
         String message;
+        String username;
+
+        System.out.println("Who are you?");
+        username = input.nextLine();
 
         System.out.println("Please provide port to start your server:");
         port = input.nextInt();
@@ -42,7 +46,7 @@ public class Main {
             while (true) {
                 message = input.nextLine();
                 if (!message.isEmpty())
-                    server.sendMessage(message);
+                    server.sendMessage(username + ": " + message);
             }
 
         } catch (IOException e) {
@@ -55,6 +59,10 @@ public class Main {
         int port;
         String host;
         String message;
+        String username;
+
+        System.out.println("Who are you?");
+        username = input.nextLine();
 
         System.out.println("Please provide host:");
         host = input.next();
@@ -69,7 +77,7 @@ public class Main {
             while (true) {
                 message = input.nextLine();
                 if (!message.isEmpty())
-                    client.sendMessage(message);
+                    client.sendMessage(username + ": " + message);
             }
 
         } catch (IOException e) {

@@ -16,17 +16,15 @@ abstract class Service {
 
     protected void runService() {
         thread = new Thread(() -> {
-
             while (true) {
-            try {
-                this.connect();
-                this.createStreams();
-                this.receiveMessages();
-            } catch (IOException e) {
-                e.printStackTrace();
+                try {
+                    this.connect();
+                    this.createStreams();
+                    this.receiveMessages();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
-            }
-
         });
         thread.start();
     }
