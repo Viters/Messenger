@@ -17,9 +17,9 @@ class Client extends Service {
     }
 
     protected final void connect() throws IOException {
-        System.out.println("Connecting...");
+        printWithDate("Waiting for connection...");
         this.connection = new Socket(hostName, port);
-        System.out.println("Connection established.");
+        printWithDate("Connection established.");
     }
 
     @Override

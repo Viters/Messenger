@@ -2,6 +2,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Created by sir.viters on 12.10.2016.
@@ -13,16 +15,18 @@ abstract class Service {
     private Thread thread;
 
     protected void runService() {
-        this.thread = new Thread(() -> {
+        thread = new Thread(() -> {
+
+            while (true) {
             try {
-                while (true) {
-                    this.connect();
-                    this.createStreams();
-                    this.receiveMessages();
-                }
+                this.connect();
+                this.createStreams();
+                this.receiveMessages();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            }
+
         });
         thread.start();
     }
@@ -30,9 +34,9 @@ abstract class Service {
     abstract protected void connect() throws IOException;
 
     private void createStreams() throws IOException {
-        input = new ObjectInputStream(connection.getInputStream());
         output = new ObjectOutputStream(connection.getOutputStream());
         output.flush();
+        input = new ObjectInputStream(connection.getInputStream());
     }
 
     private void receiveMessages() throws IOException {
@@ -40,7 +44,7 @@ abstract class Service {
         do {
             try {
                 message = input.readObject().toString();
-                System.out.println(message);
+                printWithDate(message);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -51,7 +55,7 @@ abstract class Service {
     void sendMessage(String message) throws IOException {
         output.writeObject(message);
         output.flush();
-        System.out.println("Message sent.");
+        printWithDate("Message sent.");
     }
 
     @Override
@@ -60,5 +64,10 @@ abstract class Service {
         input.close();
         output.close();
         connection.close();
+    }
+
+    protected void printWithDate(String message) {
+        String now = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+        System.out.println("[" + now + "] " + message);
     }
 }

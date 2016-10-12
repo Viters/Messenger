@@ -16,9 +16,9 @@ class Server extends Service {
     }
 
     protected final void connect() throws IOException {
-        System.out.println("Waiting for connection...");
+        printWithDate("Waiting for connection...");
         connection = socket.accept();
-        System.out.println("Connection established.");
+        printWithDate("Connection established.");
     }
 
     @Override
